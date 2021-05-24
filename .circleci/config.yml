@@ -10,6 +10,7 @@ workflows:
     jobs:
       - cdk/publish:
           github-token-variable: GH_TOKEN
+          github-org: karlderkaefer
           filters:
             branches:
               only:
