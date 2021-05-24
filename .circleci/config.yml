@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  cdk: signavio/cdk-orb@0.1.8
+  cdk: signavio/cdk-orb@0.1.9
 workflows:
   build:
     jobs:
