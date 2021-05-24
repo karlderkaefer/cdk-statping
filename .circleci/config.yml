@@ -15,5 +15,5 @@ workflows:
               only:
                 - master
                 - main
-          context: semantic-release
+          context: semantics-release
 
