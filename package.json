@@ -1,5 +1,6 @@
 {
-  "name": "cdk-statping",
+  "name": "@karlderkaefer/cdk-template",
+  "repository": "git@github.com:karlderkaefer/cdk-statping.git",
   "version": "0.1.0",
   "bin": {
     "cdk-statping": "bin/cdk-statping.js"
@@ -13,6 +14,8 @@
   "devDependencies": {
     "@aws-cdk/assert": "1.105.0",
     "@aws-cdk/aws-config": "^1.105.0",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
     "aws-cdk": "1.105.0",
@@ -20,6 +23,7 @@
     "jest": "^26.4.2",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
+    "semantic-release": "^17.4.3",
     "ts-jest": "^26.2.0",
     "ts-node": "^9.0.0",
     "typescript": "~3.9.7"
