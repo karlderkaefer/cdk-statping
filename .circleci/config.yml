@@ -14,3 +14,4 @@ workflows:
                 - master
                 - main
           context: semantic-release
+
