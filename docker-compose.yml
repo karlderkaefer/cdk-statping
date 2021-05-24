@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  db:
+    image: library/mysql:8
+    restart: always
+    volumes:
+    - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_USER: statping
+      MYSQL_PASSWORD: helloapes
+      MYSQL_DATABASE: statping
+      MYSQL_ROOT_PASSWORD: rlqweoaqww
+  statping:
+    image: statping/statping
+    restart: always
+    environment:
+      DB_CONN: mysql
+      DB_HOST: db
+      DB_USER: statping
+      DB_PASS: helloapes
+      DB_PORT: 3306
+      DB_DATABASE: statping
+    ports:
+      - 8080
+    depends_on:
+      - db
+    deploy:
+      replicas: 1
+volumes:
+  statping_data:
+  mysql_data:
