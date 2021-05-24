@@ -4,10 +4,12 @@ orbs:
 workflows:
   build:
     jobs:
-      - cdk/test
+      - cdk/test:
+          github-token-variable: GH_TOKEN
   publish:
     jobs:
       - cdk/publish:
+          github-token-variable: GH_TOKEN
           filters:
             branches:
               only:
