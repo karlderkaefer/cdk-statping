@@ -11,6 +11,7 @@ export type StatpingProps = {
   serverlessClusterProps?: rds.ServerlessClusterProps;
   clusterProps?: ecs.ClusterProps;
   fargateServiceProps?: ecspatterns.ApplicationLoadBalancedFargateServiceProps;
+  fargateLoadBalancerCidr?: ec2.IPeer;
   clusterName?: string;
   hostedZoneId: string;
   hostedZoneName: string;
@@ -34,6 +35,7 @@ function getPropsWithDefaults(props: StatpingProps): StatpingProps {
     hostedZoneName: '',
     statpingHeader: 'test status page',
     statpingDescription: 'monitor external services',
+    fargateLoadBalancerCidr: ec2.Peer.ipv4('0.0.0.0/16'),
   };
   return { ...defaultStatpingProps, ...props };
 }
@@ -151,6 +153,7 @@ export class CdkStatpingStack extends cdk.Stack {
       circuitBreaker: {
         rollback: false,
       },
+      openListener: true,
       enableECSManagedTags: true,
     };
 
@@ -158,6 +161,31 @@ export class CdkStatpingStack extends cdk.Stack {
       ...defaultFargateServiceProps,
       ...props.fargateServiceProps,
     });
+
+    // const albProps : elbv2.AddApplicationActionProps = {
+    //   action: elbv2.ListenerAction.authenticateOidc({
+    //     authorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
+    //     clientId: "123",
+    //     clientSecret: new cdk.SecretValue("123"),
+    //     issuer: "https://accounts.google.com",
+    //     tokenEndpoint: "https://oauth2.googleapis.com/token",
+    //     userInfoEndpoint: "https://openidconnect.googleapis.com/v1/userinfo",
+    //     onUnauthenticatedRequest: elbv2.UnauthenticatedAction.AUTHENTICATE,
+    //     sessionCookieName: `Auth${id}`,
+    //     sessionTimeout: cdk.Duration.days(1),
+    //     next: elbv2.ListenerAction.forward([fargateService.targetGroup]),
+    //   }),
+    // }
+    // fargateService.listener.addAction(`OauthForwarding${id}`, albProps)
+    // fargateService.listener.addAction(`Redirect${id}`, albProps)
+    const loadBalancerSecurityGroup = new ec2.SecurityGroup(this, `LBSecurityGroup${id}`, { vpc });
+    loadBalancerSecurityGroup.addIngressRule(
+      props.fargateLoadBalancerCidr!,
+      ec2.Port.tcp(443),
+      'allow https traffic from whitelisted cidr block'
+    );
+    fargateService.loadBalancer.addSecurityGroup(loadBalancerSecurityGroup);
+
     // fargateService.targetGroup.configureHealthCheck({path: "/health"})
   }
 }

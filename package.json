@@ -1,5 +1,5 @@
 {
-  "name": "@karlderkaefer/cdk-template",
+  "name": "@karlderkaefer/cdk-statping",
   "repository": "git@github.com:karlderkaefer/cdk-statping.git",
   "version": "0.1.0",
   "bin": {
